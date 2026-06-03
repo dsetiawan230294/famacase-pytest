@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "famacase-pytest"
+version = "0.1.0"
+description = "Famacase test management plugin for pytest. Drop-in transport swap for qase-pytest pointed at the Famacase Reporter Ingestion API."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+authors = [{ name = "Didit Setiawan" }]
+keywords = ["pytest", "qase", "famacase", "test-management", "reporter"]
+classifiers = [
+    "Framework :: Pytest",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    # We vendor `qase-pytest` source (Apache-2.0) under `famacase.pytest._qase`
+    # so users don't have to install it. We still depend on
+    # `qase-python-commons` (3.x, which installs as `qase.commons.*`) for the
+    # ConfigManager, models, reporters and BaseApiClient that the vendored
+    # plugin code and our transport swap build on.
+    "qase-python-commons>=3,<4",
+    "requests>=2.31",
+    "filelock>=3.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-mock>=3.12",
+    "build>=1.0",
+    "ruff>=0.4",
+]
+
+[project.entry-points.pytest11]
+famacase_pytest = "famacase.pytest.plugin"
+
+[project.urls]
+Homepage = "https://github.com/your-org/famacase"
+Tracker = "https://github.com/your-org/famacase/blob/main/famacase-pytest/TRACKER.md"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["famacase*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]  # long lines acceptable for log strings + docs

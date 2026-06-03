@@ -1,0 +1,23 @@
+famacase-pytest
+Copyright (c) Famacase contributors
+
+This product includes software developed by Qase TMS
+(https://github.com/qase-tms/qase-python), licensed under the
+Apache License, Version 2.0.
+
+The following files under ``src/famacase/pytest/_qase/`` are vendored
+copies of source files from the upstream ``qase-pytest`` project at
+``qase-python/qase-pytest/src/qase/pytest/``:
+
+    __init__.py
+    bdd.py
+    context_manager.py
+    decorators.py
+    options.py
+    plugin.py
+    _hooks.py            (vendored from upstream ``conftest.py``;
+                          ``pytest_unconfigure`` typo ``config.src`` \u2192
+                          ``config.qase`` corrected)
+
+The upstream Apache-2.0 license text is preserved verbatim at
+``LICENSE-qase-pytest.txt`` at the package root.
