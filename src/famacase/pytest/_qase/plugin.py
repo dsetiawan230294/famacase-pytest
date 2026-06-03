@@ -375,7 +375,12 @@ class QasePytestPlugin:
     def _get_title(self, item):
         title = None
         try:
-            title = item.get_closest_marker("qase_title").kwargs.get("title")
+            marker = item.get_closest_marker("qase_title")
+            if marker:
+                title = marker.kwargs.get("title")
+                if title is None and marker.args:
+                    raw = marker.args[0]
+                    title = " | ".join(raw) if isinstance(raw, list) else raw
         except (AttributeError, TypeError):
             pass
 
@@ -436,8 +441,11 @@ class QasePytestPlugin:
     def _set_tags(self, item) -> None:
         tags = []
         for marker in item.iter_markers("qase_tags"):
-            marker_tags = marker.kwargs.get("tags", ())
-            tags.extend(marker_tags)
+            marker_tags = marker.kwargs.get("tags")
+            if marker_tags is None and marker.args:
+                raw = marker.args[0]
+                marker_tags = (raw,) if isinstance(raw, str) else tuple(raw)
+            tags.extend(marker_tags or ())
         if not tags:
             return
         result = self.runtime.result
@@ -515,8 +523,11 @@ class QasePytestPlugin:
     def _set_suite(self, item) -> None:
         marker = item.get_closest_marker("qase_suite")
         if marker:
+            title = marker.kwargs.get("title")
+            if title is None and marker.args:
+                title = marker.args[0]
             self.runtime.result.relations = self.__prepare_relations(
-                marker.kwargs.get("title").split(".")
+                title.split(".")
             )
             return
         self._get_suite(item)
@@ -585,12 +596,15 @@ class QasePytestPlugin:
         if marker is None:
             return None
         ids = marker.kwargs.get("id")
+        if ids is None and marker.args:
+            ids = marker.args[0]
         if ids is None:
             return None
         if isinstance(ids, int):
             return [ids]
-        else:
-            return [int(i) for i in re.split(r"\s*,\s*", ids)]
+        if isinstance(ids, list):
+            return [int(i) for i in ids]
+        return [int(i) for i in re.split(r"\s*,\s*", str(ids))]
 
 
 class QasePytestPluginSingleton:
