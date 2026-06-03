@@ -39,8 +39,7 @@ dev = [
 famacase_pytest = "famacase.pytest.plugin"
 
 [project.urls]
-Homepage = "https://github.com/your-org/famacase"
-Tracker = "https://github.com/your-org/famacase/blob/main/famacase-pytest/TRACKER.md"
+Homepage = "https://github.com/dsetiawan230294/famacase"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
