@@ -215,13 +215,6 @@ Full combined regression (unit + live + E2E): **79 tests, ~8 seconds.**
 
 ---
 
-## Roadmap & status
-
-See [TRACKER.md](./TRACKER.md). Epic A (backend) and Epic B (this plugin)
-are complete; remaining work is packaging + release plumbing.
-
----
-
 ## License
 
 Apache-2.0. Same license as upstream `qase-pytest` for ease of merging
