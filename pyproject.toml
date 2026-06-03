@@ -39,7 +39,7 @@ dev = [
 famacase_pytest = "famacase.pytest.plugin"
 
 [project.urls]
-Homepage = "https://github.com/dsetiawan230294/famacase"
+Homepage = "https://github.com/dsetiawan230294/famacase-pytest"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
