@@ -37,7 +37,7 @@ def pytest_configure(config):
     config.qase = QasePytestPluginSingleton.get_instance()
     config.pluginmanager.register(
         config.qase,
-        name="qase-pytest",
+        name="famacase-pytest",
     )
 
     try:
@@ -426,4 +426,6 @@ def pytest_unconfigure(config):
     qase = getattr(config, "qase", None)
     if qase:
         del config.qase
-        config.pluginmanager.unregister(qase)
+        plugin = config.pluginmanager.get_plugin("famacase-pytest")
+        if plugin is not None:
+            config.pluginmanager.unregister(plugin)
