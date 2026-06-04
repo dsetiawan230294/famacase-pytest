@@ -1,5 +1,6 @@
 import os
 import re
+import copy
 from typing import Tuple, Union, List
 import mimetypes
 
@@ -325,7 +326,16 @@ class QasePytestPlugin:
         self.runtime.result.add_steps(
             [step for key, step in self.runtime.steps.items()]
         )
-        self.reporter.add_result(self.runtime.result)
+
+        # If multiple test IDs, submit separate results for each
+        testops_ids = self.runtime.result.get_testops_ids()
+        if testops_ids and len(testops_ids) > 1:
+            for test_id in testops_ids:
+                result_copy = copy.deepcopy(self.runtime.result)
+                result_copy.testops_ids = [test_id]
+                self.reporter.add_result(result_copy)
+        else:
+            self.reporter.add_result(self.runtime.result)
 
         self.runtime.clear()
 

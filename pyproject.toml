@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "FamacasePytest"
-version = "0.1.3"
+version = "0.1.4"
 description = "Famacase test management plugin for pytest. Drop-in transport swap for qase-pytest pointed at the Famacase Reporter Ingestion API."
 readme = "README.md"
 license = { text = "Apache-2.0" }
