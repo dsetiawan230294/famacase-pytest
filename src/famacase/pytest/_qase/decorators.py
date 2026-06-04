@@ -29,8 +29,10 @@ class qase:
         :return: pytest.mark instance
         """
 
-        if isinstance(id, list) and all(isinstance(item, int) for item in id):
-            return pytest.mark.qase_id(id=','.join(str(i) for i in id))
+        if isinstance(id, (list, tuple, set)) and all(
+            isinstance(item, int) for item in id
+        ):
+            return pytest.mark.qase_id(id=list(id))
 
         return pytest.mark.qase_id(id=id)
 
@@ -54,12 +56,16 @@ class qase:
         """
         if isinstance(testops_ids, int):
             ids_list = [testops_ids]
-        elif isinstance(testops_ids, list) and all(isinstance(item, int) for item in testops_ids):
+        elif isinstance(testops_ids, list) and all(
+            isinstance(item, int) for item in testops_ids
+        ):
             ids_list = testops_ids
         else:
             raise ValueError("testops_ids must be int or list of int")
 
-        return pytest.mark.qase_project_id(project_code=project_code, testops_ids=ids_list)
+        return pytest.mark.qase_project_id(
+            project_code=project_code, testops_ids=ids_list
+        )
 
     @staticmethod
     def title(title):
@@ -285,7 +291,7 @@ class qase:
                 data=StepTextData(
                     action=title,
                     expected_result=expected if expected else None,
-                )
+                ),
             )
             plugin.start_step(step)
             yield
@@ -303,7 +309,7 @@ class qase:
         argnames: Union[str, Sequence[str]],
         argvalues: List[Any],
         ids: List[str] = None,
-        indirect: Union[bool, List[str]] = False
+        indirect: Union[bool, List[str]] = False,
     ):
         """
         Extended version of pytest.mark.parametrize that prevents parameter collection for Qase reports.
@@ -325,9 +331,11 @@ class qase:
             If a list, it should contain the names of arguments that should be treated as indirect parameters.
         :return: pytest.mark instance
         """
+
         def decorator(func):
             func = pytest.mark.parametrize(
-                argnames, argvalues, ids=ids, indirect=indirect)(func)
+                argnames, argvalues, ids=ids, indirect=indirect
+            )(func)
             func = pytest.mark.qase_parametrize_ignore(argnames=argnames)(func)
             return func
 

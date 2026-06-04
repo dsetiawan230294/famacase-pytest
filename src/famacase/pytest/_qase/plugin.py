@@ -526,9 +526,7 @@ class QasePytestPlugin:
             title = marker.kwargs.get("title")
             if title is None and marker.args:
                 title = marker.args[0]
-            self.runtime.result.relations = self.__prepare_relations(
-                title.split(".")
-            )
+            self.runtime.result.relations = self.__prepare_relations(title.split("."))
             return
         self._get_suite(item)
 
@@ -602,7 +600,7 @@ class QasePytestPlugin:
             return None
         if isinstance(ids, int):
             return [ids]
-        if isinstance(ids, list):
+        if isinstance(ids, (list, tuple, set)):
             return [int(i) for i in ids]
         return [int(i) for i in re.split(r"\s*,\s*", str(ids))]
 
